@@ -73,6 +73,26 @@ export interface JobStatus {
   output_files: string[];
 }
 
+export type DbKey = "wos" | "scopus";
+
+export interface DbStatus {
+  database: DbKey;
+  name: string;
+  logged_in: boolean;
+  method: "auto" | "manual" | null;
+  checked_at: string | null;
+  detail: string;
+  current_url: string | null;
+}
+
+export interface DbOverview {
+  novnc_url: string;
+  login_required: boolean;
+  mock_mode: boolean;
+  browser_ready: boolean;
+  databases: DbStatus[];
+}
+
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, { headers: { "Content-Type": "application/json" }, ...init });
   if (!res.ok) {
@@ -95,4 +115,9 @@ export const api = {
   createJob: (body: { kind: JobKind; scholar_id: string; author_name: string; data_year: number; item_ids: string[] }) =>
     request<JobStatus>("/api/jobs", { method: "POST", body: JSON.stringify(body) }),
   job: (id: string) => request<JobStatus>(`/api/jobs/${id}`),
+  dbOverview: () => request<DbOverview>("/api/db-session"),
+  dbOpen: (db: DbKey) => request<{ opened: string }>(`/api/db-session/${db}/open`, { method: "POST" }),
+  dbCheck: (db: DbKey) => request<DbStatus>(`/api/db-session/${db}/check`, { method: "POST" }),
+  dbConfirm: (db: DbKey) => request<DbStatus>(`/api/db-session/${db}/confirm`, { method: "POST" }),
+  dbLogout: (db: DbKey) => request<DbStatus>(`/api/db-session/${db}/logout`, { method: "POST" }),
 };

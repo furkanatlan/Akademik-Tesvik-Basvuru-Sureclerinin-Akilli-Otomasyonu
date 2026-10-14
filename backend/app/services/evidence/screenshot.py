@@ -52,17 +52,31 @@ def highlight_terms(page: Page, terms: list[str]) -> int:
     return page.evaluate(_HIGHLIGHT_JS, terms)
 
 
+def _wrap(text: str, font: ImageFont.FreeTypeFont, max_width: float) -> list[str]:
+    """URL gibi boşluksuz uzun metni genişliğe göre karakter bazında satırlara böler."""
+    lines, current = [], ""
+    for ch in text:
+        if font.getlength(current + ch) > max_width:
+            lines.append(current)
+            current = ch
+        else:
+            current += ch
+    return lines + [current] if current else lines
+
+
 def stamp_header(png_path: Path, url: str, label: str) -> None:
-    """Görüntünün üstüne kırmızı açıklama + URL + tarih şeridi ekler."""
+    """Görüntünün üstüne kırmızı açıklama + URL (tamamı, gerekirse çok satır) + tarih şeridi ekler."""
     img = Image.open(png_path).convert("RGB")
     font = ImageFont.truetype(FONT_PATH, 18)
     small = ImageFont.truetype(FONT_PATH, 14)
-    band_h = 64
+    url_lines = _wrap(f"{url}    ({datetime.now():%d.%m.%Y %H:%M})", small, img.width - 24)
+    band_h = 38 + 18 * len(url_lines) + 8
     out = Image.new("RGB", (img.width, img.height + band_h), "white")
     out.paste(img, (0, band_h))
     draw = ImageDraw.Draw(out)
     draw.text((12, 8), label, fill=(220, 0, 0), font=font)
-    draw.text((12, 38), f"{url}    ({datetime.now():%d.%m.%Y %H:%M})", fill=(40, 40, 40), font=small)
+    for i, line in enumerate(url_lines):
+        draw.text((12, 38 + 18 * i), line, fill=(40, 40, 40), font=small)
     draw.line([(0, band_h - 1), (img.width, band_h - 1)], fill=(200, 200, 200), width=1)
     out.save(png_path)
 

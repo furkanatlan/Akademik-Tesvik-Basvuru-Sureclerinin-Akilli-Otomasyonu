@@ -165,7 +165,13 @@ def article_evidence_plan(pub: Publication, index: IndexType) -> list[EvidenceIt
 def evaluate_citation(
     citing: CitingWork, cited: Publication, applicant_name: str, data_year: int
 ) -> EvaluationResult:
-    """Atıf kabul kuralları (kılavuz s.10-31 + kullanıcı kuralı: bildiri içindeki atıf kabul edilmez)."""
+    """Atıf kabul kuralları (kılavuz s.10-31 + proje kuralı).
+
+    BİLDİRİ KURALI — belirleyici olan atıfı YAPAN çalışmanın türüdür:
+      * Hocanın herhangi bir yayınına (makale VEYA bildiri) bir BİLDİRİ içinde yapılan atıf  -> RET
+      * Hocanın BİLDİRİSİNE bir dergi MAKALESİ içinde yapılan atıf                          -> KABUL
+    Atıf ALAN yayının türü (cited.work_type) kararı etkilemez.
+    """
     if citing.year != data_year:
         return EvaluationResult(
             decision=Decision.REJECTED,
@@ -179,7 +185,8 @@ def evaluate_citation(
     if citing.work_type == WorkType.PROCEEDINGS:
         return EvaluationResult(
             decision=Decision.REJECTED,
-            reasons=["Atıf bir bildiri (konferans) içinde yapılmış: bildiri atıfları kabul edilmez."],
+            reasons=["Atıfı yapan çalışma bir bildiri (konferans/kongre/sempozyum): "
+                     "bildiri içinde yapılan atıflar kabul edilmez."],
         )
     if citing.work_type in (WorkType.THESIS, WorkType.PREPRINT, WorkType.OTHER):
         return EvaluationResult(
@@ -211,8 +218,12 @@ def evaluate_citation(
             reasons=["Atıf yapan derginin dizini tespit edilemedi."],
             index=index,
         )
+    notes = []
+    if cited.work_type == WorkType.PROCEEDINGS:
+        notes.append("Atıf alan yayınınız bir bildiri; atıf bir dergi makalesinden geldiği için kabul edilir.")
     return EvaluationResult(
         decision=Decision.ACCEPTED,
+        reasons=notes,
         index=index,
         evidence_plan=citation_evidence_plan(citing, cited, index),
     )
@@ -304,22 +315,58 @@ def book_citation_plan(citing: CitingWork, cited: Publication) -> list[EvidenceI
     ]
 
 
+def database_citation_plan(cited: Publication, database: str, data_year: int, index: IndexType) -> list[EvidenceItem]:
+    """Yol B: 'Web of Science ve Scopus veri tabanlarından atıfların gösterilmesi' (s.9-13).
+
+    WoS / Scopus girişi yapıldıktan sonra, atıf alan HER yayın için tek PDF:
+      1) başvuru sahibinin atıf alan çalışmasının ilk sayfası
+      2) filtrelenmiş atıf listesi ekran görüntüsü (URL damgalı)
+    """
+    first_page = EvidenceItem(
+        order=1,
+        kind=EvidenceKind.PDF_FIRST_PAGE,
+        label="başvuru sahibinin atıf alan çalışmasının ilk sayfası",
+        source_url=cited.pdf_url,
+    )
+    if database == "wos":
+        index_name = WOS_INDEX_LABELS.get(index, WOS_INDEX_LABELS[IndexType.SCIE])
+        report = EvidenceItem(
+            order=2,
+            kind=EvidenceKind.DATABASE_CITATION_REPORT,
+            label=f"Web of Science atıf listesi - {index_name}, {data_year} "
+            "(Early Access, bildiri ve kendine atıflar hariç)",
+            highlight_terms=["Refined By", f"Publication Years: {data_year}", "NOT Document Types: Early Access",
+                             "NOT Researcher Profiles", index_name],
+            source_url="https://www.webofscience.com/wos/woscc/advanced-search",
+        )
+    else:
+        report = EvidenceItem(
+            order=2,
+            kind=EvidenceKind.DATABASE_CITATION_REPORT,
+            label=f"Scopus atıf listesi - {data_year} (Article in Press, bildiri ve kendine atıflar hariç)",
+            highlight_terms=[f"PUBYEAR IS {data_year}", "PUBSTAGE(final)", "NOT AU-ID"],
+            source_url="https://www.scopus.com/search/form.uri?display=advanced",
+            note="Scopus listesindeki atıfların WoS veya başka dizindeki dergilerde olduğu ayrıca belgelenir (s.13 m.5).",
+        )
+    return [first_page, report]
+
+
 def database_citation_checklist(database: str, data_year: int, author_surname: str) -> list[str]:
     """Alternatif yol: WoS / Scopus veri tabanı üzerinden atıf gösterimi (s.10-13).
 
-    Bu veri tabanları kurum girişi gerektirdiğinden kullanıcı ekran görüntüsünü/PDF'i kendisi yükler;
-    sistem yüklenen belgede aşağıdaki ifadelerin bulunduğunu OCR ile kontrol eder.
+    Yönlendirmeli (elle tamamlanan) ekran görüntülerinde bu ifadelerin göründüğü OCR ile kontrol edilir.
     """
     if database == "wos":
         return [
-            "NOT Document Types: Early Access",
+            "NOT Document Types: Early Access",  # Proceedings Paper dışlaması listede bildiri varsa görünür
             f"NOT Researcher Profiles: {author_surname}",
             "Web of Science Index:",
             f"Publication Years: {data_year}",
             "webofscience.com",  # URL belge üzerinde görünmeli
         ]
+    # Otomatik sorgu (PUBYEAR IS / PUBSTAGE(final) / NOT AU-ID) ya da elle filtre (LIMIT-TO / EXCLUDE)
     return [
-        f"LIMIT-TO ( PUBYEAR , {data_year} )",
-        "EXCLUDE",
+        f"PUBYEAR IS {data_year}|LIMIT-TO ( PUBYEAR , {data_year} )",
+        "NOT AU-ID|EXCLUDE",
         "scopus.com",
     ]

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Check } from "lucide-react";
 import type { Decision } from "../lib/api";
 
-export const STEPS = ["Akademisyen", "İşlem", "Yıl", "Sonuçlar"];
+export const STEPS = ["Akademisyen", "İşlem", "Yıl", "WoS / Scopus", "Sonuçlar"];
 
 export function Stepper({ current }: { current: number }) {
   return (

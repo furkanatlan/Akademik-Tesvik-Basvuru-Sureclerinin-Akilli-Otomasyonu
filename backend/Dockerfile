@@ -23,6 +23,16 @@ RUN pip install -r requirements.txt \
     && playwright install --with-deps chromium \
     && rm -rf /var/lib/apt/lists/*
 
+# Paylaşımlı (görünür) tarayıcı - WoS/Scopus kurum girişi için ('browser' servisi kullanır):
+#  xvfb      : sanal ekran (Chromium pencereli çalışsın diye)
+#  x11vnc    : sanal ekranı VNC ile yayınlar
+#  novnc + websockify : VNC'yi web sayfasına çevirir -> arayüzde gömülü tarayıcı (http://localhost:6080)
+#  socat     : Chromium'un uzaktan kontrol (CDP) portunu diğer container'lara açar
+#  fonts-noto-core : web sitelerinde Türkçe/uluslararası karakterlerin düzgün görünmesi
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        xvfb x11vnc novnc websockify socat fonts-noto-core \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY . .
 RUN mkdir -p /data
 

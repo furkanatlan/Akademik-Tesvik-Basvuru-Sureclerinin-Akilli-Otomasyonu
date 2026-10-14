@@ -114,6 +114,14 @@ def _():
     return "PONG"
 
 
+@check("Paylaşımlı tarayıcı (WoS/Scopus girişi): CDP bağlantısı")
+def _():
+    from app.services.dbsession.browser import shared_context
+
+    with shared_context() as ctx:
+        return f"bağlandı, açık sekme: {len(ctx.pages)} (kullanıcı ekranı: http://localhost:6080/vnc.html)"
+
+
 @check("İnternet erişimi (OpenAlex API)")
 def _():
     import httpx

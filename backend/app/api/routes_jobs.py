@@ -1,6 +1,7 @@
 from celery.result import AsyncResult
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
+from app.api.routes_dbsession import ensure_db_session
 from app.models.schemas import JobKind, JobRequest, JobStatus
 from app.pipeline.tasks import prepare_articles, prepare_citations
 from app.worker import celery_app
@@ -8,7 +9,7 @@ from app.worker import celery_app
 router = APIRouter(prefix="/jobs", tags=["Belge Hazırlama İşleri"])
 
 
-@router.post("", response_model=JobStatus)
+@router.post("", response_model=JobStatus, dependencies=[Depends(ensure_db_session)])
 def create_job(req: JobRequest):
     task = prepare_articles if req.kind == JobKind.ARTICLES else prepare_citations
     result = task.delay(req.model_dump(mode="json"))

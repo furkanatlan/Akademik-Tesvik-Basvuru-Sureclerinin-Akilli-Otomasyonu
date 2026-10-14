@@ -1,7 +1,8 @@
 # Akademik Teşvik Başvuru Süreçlerinin Akıllı Otomasyonu
 **Metin İşleme ve Görsel Kanıt Oluşturma**
 
-Akademisyenin adını alıp Google Scholar'dan yayın ve atıflarını bulan, seçilen yıla göre filtreleyen ve
+Akademisyenin adını alıp Google Scholar'dan yayın ve atıflarını bulan, seçilen yıla göre filtreleyen,
+uygulama içindeki tarayıcıda yapılan WoS / Scopus kurum girişiyle dizin taramasını yapan ve
 Burdur Mehmet Akif Ersoy Üniversitesi Akademik Teşvik Kılavuzu'na ([kilavuz.pdf](kilavuz.pdf)) uygun
 **işaretlenmiş kanıt PDF'lerini** otomatik hazırlayan web uygulaması.
 
@@ -17,6 +18,7 @@ docker compose exec backend python scripts/smoke_test.py   # tüm satırlar OK o
 ```
 - Uygulama: http://localhost:5173 (mock modda "Ahmet Yılmaz" arayın — örnek veriler kurgusaldır)
 - API dokümantasyonu: http://localhost:8000/docs
+- Gömülü tarayıcı (WoS / Scopus kurum girişi): uygulamanın 4. adımında görünür; doğrudan http://localhost:6080/vnc.html
 
 ## Servisler
 | Servis | Görev | Port |
@@ -24,6 +26,7 @@ docker compose exec backend python scripts/smoke_test.py   # tüm satırlar OK o
 | frontend | React + Vite arayüz | 5173 |
 | backend | FastAPI REST API | 8000 |
 | worker | Celery: tarama, PDF işaretleme, birleştirme | — |
+| browser | Paylaşımlı Chromium + noVNC: WoS/Scopus girişi ve oturumlu tarama | 6080 (yalnızca localhost) |
 | db | PostgreSQL 16 (önbellek, iş geçmişi) | iç ağ |
 | redis | İş kuyruğu | iç ağ |
 | grobid | (opsiyonel) kaynakça ayrıştırma — `docker compose --profile grobid up -d grobid` | 8070 |

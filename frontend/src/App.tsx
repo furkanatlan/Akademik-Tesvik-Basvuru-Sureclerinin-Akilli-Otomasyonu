@@ -4,18 +4,22 @@ import type { AuthorCandidate, JobKind, YearOption } from "./lib/api";
 import { Stepper } from "./components/ui";
 import { ActionStep, AuthorStep, YearStep } from "./components/steps";
 import { ResultsStep } from "./components/ResultsStep";
+import { DbLoginStep } from "./components/DbLoginStep";
 
 export default function App() {
   const [author, setAuthor] = useState<AuthorCandidate | null>(null);
   const [kind, setKind] = useState<JobKind | null>(null);
   const [year, setYear] = useState<YearOption | null>(null);
+  // Dizin taraması ve kanıt üretimi yalnızca WoS / Scopus girişinden SONRA başlar
+  const [dbReady, setDbReady] = useState(false);
 
-  const step = !author ? 0 : !kind ? 1 : !year ? 2 : 3;
-  const back = () => (year ? setYear(null) : kind ? setKind(null) : setAuthor(null));
+  const step = !author ? 0 : !kind ? 1 : !year ? 2 : !dbReady ? 3 : 4;
+  const back = () =>
+    dbReady ? setDbReady(false) : year ? setYear(null) : kind ? setKind(null) : setAuthor(null);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <header className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mx-auto max-w-5xl px-4 py-8">
+      <header className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-3">
           <div className="rounded-xl bg-maku-500 p-2 text-white">
             <GraduationCap />
@@ -42,7 +46,8 @@ export default function App() {
       {step === 0 && <AuthorStep onSelect={setAuthor} />}
       {step === 1 && <ActionStep onSelect={setKind} />}
       {step === 2 && <YearStep onSelect={setYear} />}
-      {step === 3 && author && kind && year && <ResultsStep author={author} kind={kind} year={year} />}
+      {step === 3 && <DbLoginStep onDone={() => setDbReady(true)} />}
+      {step === 4 && author && kind && year && <ResultsStep author={author} kind={kind} year={year} />}
     </div>
   );
 }

@@ -7,6 +7,7 @@ x-backend-common: &backend-common
   build: ./backend
   image: akademik-tesvik-backend:dev
   env_file: .env
+  restart: unless-stopped
   shm_size: "1gb"             # Chromium (Playwright) için paylaşımlı bellek
   environment:
     WATCHFILES_FORCE_POLLING: "true"   # Windows/Mac bind-mount'ta dosya değişikliğini algılamak için
@@ -18,10 +19,13 @@ x-backend-common: &backend-common
       condition: service_healthy
     redis:
       condition: service_healthy
+    browser:
+      condition: service_started
 
 services:
   db:
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_USER: tesvik
       POSTGRES_PASSWORD: tesvik
@@ -37,6 +41,7 @@ services:
 
   redis:
     image: redis:7-alpine
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -53,8 +58,23 @@ services:
     # Not: worker kod değişikliğinde otomatik yenilenmez -> docker compose restart worker
     command: celery -A app.worker worker --loglevel=info --concurrency=2
 
+  # Paylaşımlı, görünür tarayıcı: WoS / Scopus kurum girişi burada yapılır (arayüzde gömülü görünür).
+  # Oturum çerezleri 'browser-profile' volume'ünde kalıcıdır.
+  browser:
+    image: akademik-tesvik-backend:dev
+    restart: unless-stopped
+    build: ./backend
+    command: sh /app/scripts/start_browser.sh
+    shm_size: "2gb"
+    volumes:
+      - ./backend:/app
+      - browser-profile:/browser-profile
+    ports:
+      - "127.0.0.1:6080:6080"   # noVNC: yalnızca bu bilgisayardan erişilebilir (oturum bilgisi içerir)
+
   frontend:
     build: ./frontend
+    restart: unless-stopped
     image: akademik-tesvik-frontend:dev
     environment:
       CHOKIDAR_USEPOLLING: "true"
@@ -77,3 +97,4 @@ services:
 
 volumes:
   pgdata:
+  browser-profile:

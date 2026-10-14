@@ -1,7 +1,7 @@
 from datetime import date
 
 from app.core.names import same_person
-from app.core.rules import evaluate_citation, evaluate_publication
+from app.core.rules import database_citation_plan, evaluate_citation, evaluate_publication
 from app.core.years import year_options
 from app.models.schemas import CitingWork, Decision, IndexType, JournalInfo, Publication, WorkType
 
@@ -45,6 +45,27 @@ def test_publication_wrong_year_rejected():
 def test_citation_in_proceedings_rejected():
     r = evaluate_citation(_cit(work_type=WorkType.PROCEEDINGS), _pub(), "Ahmet Yılmaz", 2026)
     assert r.decision == Decision.REJECTED
+
+
+def test_proceedings_citing_applicants_proceedings_rejected():
+    """Hocanın bildirisine bir bildiri içinde yapılan atıf da reddedilir."""
+    cited = _pub(work_type=WorkType.PROCEEDINGS, year=2019)
+    r = evaluate_citation(_cit(work_type=WorkType.PROCEEDINGS), cited, "Ahmet Yılmaz", 2026)
+    assert r.decision == Decision.REJECTED
+
+
+def test_article_citing_applicants_proceedings_accepted():
+    """Hocanın BİLDİRİSİNE bir dergi MAKALESİNDE yapılan atıf kabul edilir."""
+    cited = _pub(work_type=WorkType.PROCEEDINGS, year=2019, journal=None, volume=None, issue=None, pages=None)
+    r = evaluate_citation(_cit(), cited, "Ahmet Yılmaz", 2026)
+    assert r.decision == Decision.ACCEPTED
+    assert any("bildiri" in reason for reason in r.reasons)
+
+
+def test_database_plan_has_first_page_and_report():
+    plan = database_citation_plan(_pub(), "scopus", 2026, IndexType.SCOPUS)
+    assert [e.kind.value for e in plan] == ["pdf_first_page", "database_citation_report"]
+    assert "PUBYEAR IS 2026" in plan[1].highlight_terms
 
 
 def test_self_citation_rejected():

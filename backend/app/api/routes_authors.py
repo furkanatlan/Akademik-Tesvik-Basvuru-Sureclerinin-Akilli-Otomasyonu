@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 
+from app.api.routes_dbsession import ensure_db_session
 from app.config import get_settings
 from app.core.rules import evaluate_citation, evaluate_publication
 from app.core.years import is_in_data_year
@@ -19,7 +20,11 @@ def search_authors(name: str = Query(..., min_length=3, description="Ad Soyad"))
     return get_provider().search_authors(name.strip())
 
 
-@router.get("/{scholar_id}/publications", response_model=list[PublicationRow])
+@router.get(
+    "/{scholar_id}/publications",
+    response_model=list[PublicationRow],
+    dependencies=[Depends(ensure_db_session)],  # dizin taraması WoS/Scopus girişinden SONRA
+)
 def publications(scholar_id: str, year: int):
     """Seçilen yılda YAYIMLANMIŞ makaleler (basım yılı esas)."""
     pubs = [p for p in get_provider().list_publications(scholar_id) if is_in_data_year(p.year, year)]
@@ -34,7 +39,11 @@ def publications(scholar_id: str, year: int):
     return [PublicationRow(publication=p, evaluation=evaluate_publication(p, year)) for p in pubs]
 
 
-@router.get("/{scholar_id}/citations", response_model=list[CitationRow])
+@router.get(
+    "/{scholar_id}/citations",
+    response_model=list[CitationRow],
+    dependencies=[Depends(ensure_db_session)],
+)
 def citations(scholar_id: str, year: int, author_name: str):
     """Yazarın TÜM yayınlarına (eski yayınlar dahil) seçilen YILDA yapılan atıflar."""
     provider = get_provider()

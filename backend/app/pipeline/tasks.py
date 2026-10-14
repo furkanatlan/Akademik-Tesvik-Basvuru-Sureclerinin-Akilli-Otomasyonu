@@ -1,5 +1,11 @@
 """Uçtan uca iş akışları (Sorumlu: Öğrenci 4 - diğer modülleri birleştirir).
 
+ÖN KOŞUL (her iki iş): WoS veya Scopus girişi doğrulanmış olmalı
+  -> services.dbsession.browser.require_login()  (mock modda atlanır)
+  Oturumlu adımlar services.dbsession.browser.shared_context() ile kullanıcının giriş yaptığı tarayıcıda çalışır.
+  Otomatik yapılamayan adımda GuidedStepRequired yakalanır; kayıt "kullanıcı tamamlamalı" olarak işaretlenir,
+  talimatlar arayüzde gösterilir, kullanıcı ekranı POST /api/db-session/{db}/capture ile kanıt olarak kaydeder.
+
 prepare_articles:
   1. provider.list_publications(scholar_id) -> yıl filtresi (core.years.is_in_data_year)
   2. metadata.enrich_publication              (Öğrenci 1)
@@ -12,7 +18,12 @@ prepare_citations:
   1. TÜM yayınlar (yıl filtresi YOK) -> her biri için provider.list_citing_works(pub, data_year)
   2. enrich_citing_work -> resolve_indexes -> core.rules.evaluate_citation
      (bildiri, kendine atıf, erken görünüm, yıl dışı -> ELENİR)
-  3. kabul edilenler için evidence_plan uygulanır, atıf başına tek PDF, sonra ZIP
+  3. kabul edilenler için evidence_plan uygulanır, atıf başına tek PDF
+  4. Yol B (kılavuz s.9-13): atıf alan HER yayın için core.rules.database_citation_plan
+       WoS girişi varsa    -> dbsession.wos.citing_report    (Early Access, bildiri, kendine atıf hariç; dizin + yıl)
+       Scopus girişi varsa -> dbsession.scopus.citing_report (PUBYEAR, PUBSTAGE(final), NOT AU-ID, DOCTYPE(ar OR re))
+     + yayının ilk sayfası -> tek PDF
+  5. Tümü ZIP
 """
 from app.models.schemas import JobRequest
 from app.worker import celery_app
