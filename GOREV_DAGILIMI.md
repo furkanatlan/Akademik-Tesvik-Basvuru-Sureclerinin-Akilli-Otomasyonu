@@ -369,6 +369,8 @@ docker compose stop                            # 11) gün sonunda (veriler korun
 |---|---|
 | Arayüzde gömülü tarayıcı alanı siyah/boş | `docker compose ps` ile `browser` servisini kontrol edin; http://localhost:6080/vnc.html adresini doğrudan açmayı deneyin. |
 | `port is already allocated` (8000/5173/6080) | O portu kullanan programı kapatın veya `docker-compose.yml`'de sol taraftaki portu değiştirin (ör. `"8001:8000"`). Postgres/Redis dışarı açılmadığı için çakışmaz. |
+| VS Code'da `frontend` klasörü kırmızı, `tsconfig.json`'da *"Cannot find type definition file for 'vite/client'"* | Hata değil: paketler yalnızca container içinde kurulu, host'taki `frontend/node_modules` boş. Editörün paketleri görmesi için (bilgisayarda Node.js 20+ varsa) bir kez: `cd frontend && npm ci`. Container kendi kopyasını kullanmaya devam eder, çakışma olmaz. Node.js yoksa bu uyarıyı yok sayabilirsiniz; asıl denetim `docker compose exec frontend npm run typecheck`. |
+| VS Code'da Python import'ları sarı/kırmızı | Aynı sebep (paketler container'da). İsterseniz VS Code **Dev Containers** eklentisiyle "Attach to Running Container → backend" diyerek editörü container'a bağlayın. |
 | Kod değişikliği API'ye yansımıyor | `docker compose restart backend` (worker için `restart worker`). |
 | Arayüz değişikliği yansımıyor | Tarayıcıda Ctrl+F5; olmazsa `docker compose restart frontend`. |
 | `ModuleNotFoundError` | Biri `requirements.txt` değiştirmiştir → `docker compose build backend worker`. |
