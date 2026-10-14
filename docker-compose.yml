@@ -1,0 +1,79 @@
+# Akademik Teşvik - geliştirme ortamı
+# Başlatma:  docker compose up -d --build
+# Durdurma:  docker compose down
+name: akademik-tesvik
+
+x-backend-common: &backend-common
+  build: ./backend
+  image: akademik-tesvik-backend:dev
+  env_file: .env
+  shm_size: "1gb"             # Chromium (Playwright) için paylaşımlı bellek
+  environment:
+    WATCHFILES_FORCE_POLLING: "true"   # Windows/Mac bind-mount'ta dosya değişikliğini algılamak için
+  volumes:
+    - ./backend:/app          # kod canlı olarak container içine yansır
+    - ./data:/data            # üretilen PDF/ekran görüntüleri host'ta görünür
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: tesvik
+      POSTGRES_PASSWORD: tesvik
+      POSTGRES_DB: tesvik
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tesvik -d tesvik"]
+      interval: 5s
+      retries: 10
+    # Port dışarı açılmadı (host'taki başka Postgres ile çakışmasın).
+    # Gerekirse: docker compose exec db psql -U tesvik
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    <<: *backend-common
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+
+  worker:
+    <<: *backend-common
+    # Not: worker kod değişikliğinde otomatik yenilenmez -> docker compose restart worker
+    command: celery -A app.worker worker --loglevel=info --concurrency=2
+
+  frontend:
+    build: ./frontend
+    image: akademik-tesvik-frontend:dev
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      BACKEND_URL: http://backend:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules     # container içindeki node_modules host ile karışmasın
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  # Opsiyonel: PDF kaynakça (references) ayrıştırma servisi.
+  # Sadece gerektiğinde:  docker compose --profile grobid up -d grobid
+  grobid:
+    image: lfoppiano/grobid:0.8.1
+    profiles: ["grobid"]
+    ports:
+      - "8070:8070"
+
+volumes:
+  pgdata:

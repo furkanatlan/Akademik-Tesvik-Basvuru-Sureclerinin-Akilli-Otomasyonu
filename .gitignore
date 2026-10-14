@@ -1,0 +1,23 @@
+# Ortam / gizli bilgiler
+.env
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Node
+node_modules/
+dist/
+
+# Üretilen dosyalar (dosyalar, ekran görüntüleri, önbellek)
+data/*
+!data/.gitkeep
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

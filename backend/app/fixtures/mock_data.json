@@ -1,0 +1,447 @@
+{
+ "authors": [
+  {
+   "scholar_id": "MOCK_AY_MAKU",
+   "name": "Ahmet Yılmaz",
+   "affiliation": "Burdur Mehmet Akif Ersoy Üniversitesi",
+   "email_domain": "mehmetakif.edu.tr",
+   "photo_url": null,
+   "cited_by_total": 412,
+   "interests": [
+    "Enerji Sistemleri",
+    "Isı Pompaları"
+   ]
+  },
+  {
+   "scholar_id": "MOCK_AY_ODTU",
+   "name": "Ahmet Yılmaz",
+   "affiliation": "Orta Doğu Teknik Üniversitesi",
+   "email_domain": "metu.edu.tr",
+   "photo_url": null,
+   "cited_by_total": 1530,
+   "interests": [
+    "Makine Öğrenmesi"
+   ]
+  },
+  {
+   "scholar_id": "MOCK_AY_EGE",
+   "name": "Ahmet Yılmaz",
+   "affiliation": "Ege Üniversitesi Tıp Fakültesi",
+   "email_domain": "ege.edu.tr",
+   "photo_url": null,
+   "cited_by_total": 88,
+   "interests": [
+    "Kardiyoloji"
+   ]
+  },
+  {
+   "scholar_id": "MOCK_FK_MAKU",
+   "name": "Fatma Koç",
+   "affiliation": "Burdur Mehmet Akif Ersoy Üniversitesi",
+   "email_domain": "mehmetakif.edu.tr",
+   "photo_url": null,
+   "cited_by_total": 95,
+   "interests": [
+    "Gıda Mühendisliği"
+   ]
+  }
+ ],
+ "publications": {
+  "MOCK_AY_MAKU": [
+   {
+    "id": "p1",
+    "title": "Güneş destekli ısı pompalarında performans analizi",
+    "authors": [
+     "Ahmet Yılmaz",
+     "Mehmet Kaya"
+    ],
+    "year": 2026,
+    "online_year": null,
+    "venue": "Journal of Cleaner Energy Systems",
+    "doi": "10.0000/demo.p1",
+    "work_type": "journal_article",
+    "journal": {
+     "title": "Journal of Cleaner Energy Systems",
+     "issn": "0000-0001",
+     "publisher": "Elsevier",
+     "homepage_url": "https://example.org/jces",
+     "indexes": [
+      "SCIE"
+     ]
+    },
+    "volume": "12",
+    "issue": "3",
+    "pages": "100-110",
+    "cited_by_count": 3
+   },
+   {
+    "id": "p2",
+    "title": "Burdur bölgesi rüzgar enerjisi potansiyelinin belirlenmesi",
+    "authors": [
+     "Ahmet Yılmaz",
+     "Elif Demir"
+    ],
+    "year": 2026,
+    "online_year": null,
+    "venue": "Mehmet Akif Ersoy Üniversitesi Fen Bilimleri Enstitüsü Dergisi",
+    "doi": "10.0000/demo.p2",
+    "work_type": "journal_article",
+    "journal": {
+     "title": "Mehmet Akif Ersoy Üniversitesi Fen Bilimleri Enstitüsü Dergisi",
+     "issn": "0000-0002",
+     "homepage_url": "https://dergipark.org.tr/tr/pub/example",
+     "indexes": [
+      "TR_DIZIN"
+     ]
+    },
+    "volume": "12",
+    "issue": "3",
+    "pages": "100-110",
+    "cited_by_count": 0
+   },
+   {
+    "id": "p3",
+    "title": "Hydrogen production from agricultural residues",
+    "authors": [
+     "Can Öztürk",
+     "Ahmet Yılmaz"
+    ],
+    "year": 2026,
+    "online_year": 2025,
+    "venue": "International Journal of Applied Technologies",
+    "doi": "10.0000/demo.p3",
+    "work_type": "journal_article",
+    "journal": {
+     "title": "International Journal of Applied Technologies",
+     "issn": "0000-0003",
+     "homepage_url": "https://example.org/ijat",
+     "founded_year": 2014,
+     "indexes": [
+      "OTHER_INTERNATIONAL"
+     ]
+    },
+    "volume": "12",
+    "issue": "3",
+    "pages": "100-110",
+    "cited_by_count": 0
+   },
+   {
+    "id": "p4",
+    "title": "Solar collector design under variable climate",
+    "authors": [
+     "Ahmet Yılmaz"
+    ],
+    "year": 2026,
+    "online_year": null,
+    "venue": "Journal of Cleaner Energy Systems",
+    "doi": "10.0000/demo.p4",
+    "work_type": "journal_article",
+    "journal": {
+     "title": "Journal of Cleaner Energy Systems",
+     "issn": "0000-0001",
+     "publisher": "Elsevier",
+     "homepage_url": "https://example.org/jces",
+     "indexes": [
+      "SCIE"
+     ]
+    },
+    "volume": null,
+    "issue": null,
+    "pages": null,
+    "cited_by_count": 0
+   },
+   {
+    "id": "p5",
+    "title": "Thermal energy storage review",
+    "authors": [
+     "Ahmet Yılmaz",
+     "Zeynep Arslan"
+    ],
+    "year": 2025,
+    "online_year": null,
+    "venue": "Turkish Journal of Engineering Research",
+    "doi": "10.0000/demo.p5",
+    "work_type": "journal_article",
+    "journal": {
+     "title": "Turkish Journal of Engineering Research",
+     "issn": "0000-0004",
+     "homepage_url": "https://example.org/tjer",
+     "indexes": [
+      "ESCI",
+      "TR_DIZIN"
+     ]
+    },
+    "volume": "12",
+    "issue": "3",
+    "pages": "100-110",
+    "cited_by_count": 7
+   },
+   {
+    "id": "p6",
+    "title": "Biomass gasification modelling",
+    "authors": [
+     "Ahmet Yılmaz",
+     "Mehmet Kaya"
+    ],
+    "year": 2021,
+    "online_year": null,
+    "venue": "Journal of Cleaner Energy Systems",
+    "doi": "10.0000/demo.p6",
+    "work_type": "journal_article",
+    "journal": {
+     "title": "Journal of Cleaner Energy Systems",
+     "issn": "0000-0001",
+     "publisher": "Elsevier",
+     "homepage_url": "https://example.org/jces",
+     "indexes": [
+      "SCIE"
+     ]
+    },
+    "volume": "12",
+    "issue": "3",
+    "pages": "100-110",
+    "cited_by_count": 25
+   },
+   {
+    "id": "p7",
+    "title": "Wind turbine site selection (Bildiri)",
+    "authors": [
+     "Ahmet Yılmaz"
+    ],
+    "year": 2019,
+    "online_year": null,
+    "venue": null,
+    "doi": "10.0000/demo.p7",
+    "work_type": "proceedings",
+    "journal": null,
+    "volume": null,
+    "issue": null,
+    "pages": null,
+    "cited_by_count": 4
+   }
+  ]
+ },
+ "citations": [
+  {
+   "id": "c1",
+   "title": "Review of advances in solar-assisted air source heat pumps",
+   "authors": [
+    "Li Wei Yang",
+    "Hua Sheng Wang"
+   ],
+   "year": 2026,
+   "online_year": null,
+   "venue": "Energy Conversion and Management",
+   "doi": "10.0000/demo.c1",
+   "work_type": "journal_article",
+   "journal": {
+    "title": "Energy Conversion and Management",
+    "issn": "0196-8904",
+    "publisher": "Elsevier",
+    "homepage_url": "https://example.org/ecm",
+    "indexes": [
+     "SCIE"
+    ]
+   },
+   "volume": "247",
+   "issue": "1",
+   "pages": "114710",
+   "cited_by_count": 0,
+   "cited_publication_id": "p6"
+  },
+  {
+   "id": "c2",
+   "title": "Rüzgar santrali kapasite faktörü analizi",
+   "authors": [
+    "Durukan Erdoğan",
+    "Kenan Yiğit"
+   ],
+   "year": 2026,
+   "online_year": null,
+   "venue": "Mehmet Akif Ersoy Üniversitesi Fen Bilimleri Enstitüsü Dergisi",
+   "doi": "10.0000/demo.c2",
+   "work_type": "journal_article",
+   "journal": {
+    "title": "Mehmet Akif Ersoy Üniversitesi Fen Bilimleri Enstitüsü Dergisi",
+    "issn": "0000-0002",
+    "homepage_url": "https://dergipark.org.tr/tr/pub/example",
+    "indexes": [
+     "TR_DIZIN"
+    ]
+   },
+   "volume": "247",
+   "issue": "1",
+   "pages": "114710",
+   "cited_by_count": 0,
+   "cited_publication_id": "p6"
+  },
+  {
+   "id": "c3",
+   "title": "Proceedings: heat pump retrofit case",
+   "authors": [
+    "Stephen Tangwe"
+   ],
+   "year": 2026,
+   "online_year": null,
+   "venue": null,
+   "doi": "10.0000/demo.c3",
+   "work_type": "proceedings",
+   "journal": null,
+   "volume": null,
+   "issue": null,
+   "pages": null,
+   "cited_by_count": 0,
+   "cited_publication_id": "p6"
+  },
+  {
+   "id": "c4",
+   "title": "Gasification follow-up study",
+   "authors": [
+    "Ahmet Yılmaz",
+    "Mehmet Kaya"
+   ],
+   "year": 2026,
+   "online_year": null,
+   "venue": "Journal of Cleaner Energy Systems",
+   "doi": "10.0000/demo.c4",
+   "work_type": "journal_article",
+   "journal": {
+    "title": "Journal of Cleaner Energy Systems",
+    "issn": "0000-0001",
+    "publisher": "Elsevier",
+    "homepage_url": "https://example.org/jces",
+    "indexes": [
+     "SCIE"
+    ]
+   },
+   "volume": "247",
+   "issue": "1",
+   "pages": "114710",
+   "cited_by_count": 0,
+   "cited_publication_id": "p6"
+  },
+  {
+   "id": "c5",
+   "title": "Air to water heat pump in a university campus",
+   "authors": [
+    "Stephen Tangwe",
+    "Kusakana Kanzumba"
+   ],
+   "year": 2026,
+   "online_year": null,
+   "venue": "International Journal of Applied Technologies",
+   "doi": "10.0000/demo.c5",
+   "work_type": "journal_article",
+   "journal": {
+    "title": "International Journal of Applied Technologies",
+    "issn": "0000-0003",
+    "homepage_url": "https://example.org/ijat",
+    "founded_year": 2014,
+    "indexes": [
+     "OTHER_INTERNATIONAL"
+    ]
+   },
+   "volume": "247",
+   "issue": "1",
+   "pages": "114710",
+   "cited_by_count": 0,
+   "cited_publication_id": "p7"
+  },
+  {
+   "id": "c6",
+   "title": "Early access storage paper",
+   "authors": [
+    "Maria Rossi"
+   ],
+   "year": 2026,
+   "online_year": null,
+   "venue": "Energy Conversion and Management",
+   "doi": "10.0000/demo.c6",
+   "work_type": "journal_article",
+   "journal": {
+    "title": "Energy Conversion and Management",
+    "issn": "0196-8904",
+    "publisher": "Elsevier",
+    "homepage_url": "https://example.org/ecm",
+    "indexes": [
+     "SCIE"
+    ]
+   },
+   "volume": null,
+   "issue": null,
+   "pages": null,
+   "cited_by_count": 0,
+   "cited_publication_id": "p5"
+  },
+  {
+   "id": "c7",
+   "title": "Handbook of Energy Materials - Chapter 4",
+   "authors": [
+    "Michael Tallon"
+   ],
+   "year": 2026,
+   "online_year": null,
+   "venue": null,
+   "doi": "10.0000/demo.c7",
+   "work_type": "book_chapter",
+   "journal": null,
+   "volume": "247",
+   "issue": "1",
+   "pages": "114710",
+   "cited_by_count": 0,
+   "cited_publication_id": "p5"
+  },
+  {
+   "id": "c8",
+   "title": "Biomass review 2025",
+   "authors": [
+    "John Smith"
+   ],
+   "year": 2025,
+   "online_year": null,
+   "venue": "Energy Conversion and Management",
+   "doi": "10.0000/demo.c8",
+   "work_type": "journal_article",
+   "journal": {
+    "title": "Energy Conversion and Management",
+    "issn": "0196-8904",
+    "publisher": "Elsevier",
+    "homepage_url": "https://example.org/ecm",
+    "indexes": [
+     "SCIE"
+    ]
+   },
+   "volume": "247",
+   "issue": "1",
+   "pages": "114710",
+   "cited_by_count": 0,
+   "cited_publication_id": "p6"
+  },
+  {
+   "id": "c9",
+   "title": "Heat pump citation in 2026",
+   "authors": [
+    "Ali Veli"
+   ],
+   "year": 2026,
+   "online_year": null,
+   "venue": "Turkish Journal of Engineering Research",
+   "doi": "10.0000/demo.c9",
+   "work_type": "journal_article",
+   "journal": {
+    "title": "Turkish Journal of Engineering Research",
+    "issn": "0000-0004",
+    "homepage_url": "https://example.org/tjer",
+    "indexes": [
+     "ESCI",
+     "TR_DIZIN"
+    ]
+   },
+   "volume": "247",
+   "issue": "1",
+   "pages": "114710",
+   "cited_by_count": 0,
+   "cited_publication_id": "p1"
+  }
+ ]
+}
